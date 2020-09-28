@@ -41,7 +41,9 @@ function Update() {
     loadAnime();
   }, [id]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     anime &&

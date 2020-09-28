@@ -10,7 +10,9 @@ function Delete(props) {
     setIsLoading(props.isLoading);
   }, [props.animeList, props.isLoading]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return <h2>Delete</h2>;
 }
