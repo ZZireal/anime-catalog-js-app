@@ -4,7 +4,7 @@ import Loading from '../Loading';
 import { Button } from '@material-ui/core';
 import axios from 'axios';
 
-import Fab from '@material-ui/core/Fab';
+import { Fab, Menu, MenuItem } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -29,7 +29,8 @@ function Catalog() {
     loadAnimeList();
   }, [wasDeleted]);
 
-  const handleClick = async (field) => {
+  const handleClickField = async (field) => {
+    setAnchorEl(null);
     setparamOrder(!paramOrder);
     setIsLoading(true);
     const { data } = await axios.get(`http://localhost:8080/anime/?field=${field}&order=${paramOrder}`);
@@ -40,7 +41,7 @@ function Catalog() {
   const deleteAnime = async (id, title) => {
     const isDeleted = window.confirm(`Вы уверены, что хотите удалить из каталога аниме "${title}"?`);
     if (isDeleted) {
-      await axios.post(`http://localhost:8080/anime/delete?id=${id}`, {
+      await axios.post(`http://localhost:8080/anime/?id=${id}`, {
         headers: {
           'content-type': 'application/json'
         }
@@ -49,57 +50,76 @@ function Catalog() {
     }
   };
 
+  //for dropdown
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  //
+
   if (isLoading) return <Loading />;
 
   return (
-    <>
-    <table className="animeTable">
-      <thead>
-			  <tr>
-          <th scope="col"><Button color='inherit' size='large' fullWidth disabled></Button></th>
-          <th scope="col"><Button color='inherit' size='large' fullWidth onClick={() => handleClick('title')}>Title</Button></th>
-          <th scope="col"><Button color='inherit' size='large' fullWidth onClick={() => handleClick('genre')}>Genre</Button></th>
-          <th scope="col"><Button color='inherit' size='large' fullWidth onClick={() => handleClick('category')}>Category</Button></th>
-          <th scope="col"><Button color='inherit' size='large' fullWidth onClick={() => handleClick('series')}>Series</Button></th>
-          <th scope="col"><Button color='inherit' size='large' fullWidth onClick={() => handleClick('year')}>Year</Button></th>
-          <th scope="col"><Button color='inherit' size='large' fullWidth onClick={() => handleClick('age')}>Age</Button></th>
-        </tr>
-			</thead>
-      <tbody>
-        {
+    <div className="table">
+      <div className="tableHead">
+        <Button color="inherit" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+          Сортировать
+        </Button>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          className="sortDropdown"
+          keepMounted={false}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem className="sortDropdownItem" onClick={() => handleClickField('title')}>Title</MenuItem>
+          <MenuItem className="sortDropdownItem" onClick={() => handleClickField('genre')}>Genre</MenuItem>
+          <MenuItem className="sortDropdownItem" onClick={() => handleClickField('category')}>Category</MenuItem>
+          <MenuItem className="sortDropdownItem" onClick={() => handleClickField('series')}>Series</MenuItem>
+          <MenuItem className="sortDropdownItem" onClick={() => handleClickField('year')}>Year</MenuItem>
+          <MenuItem className="sortDropdownItem" onClick={() => handleClickField('age')}>Age</MenuItem>
+        </Menu>
+      </div>
+      <div className="tableBody">
+      {
         animeList &&
         animeList.map((child, i) => (
-          <>
-            <tr key ={i}>
-					    <td><img className="animeImage" src={child.image} /></td>
-              <td>{child.title}</td>
-					    <td>{child.genre}</td>
-					    <td>{child.category}</td>
-					    <td>{child.series}</td>
-					    <td>{child.year}</td>
-					    <td className="editDeleteAge">
-                <div className="editDeleteIconWrapper">
-                  <Link className="blueColor" to={`update?id=${child._id}`}>
-                    <EditIcon />
-                  </Link>
-                  <Link className="blackColor" onClick={() => deleteAnime(child._id, child.title)}>
-                    <DeleteIcon />
-                  </Link>
-                </div>
-                <div>{child.age}</div>
-              </td>
-					  </tr>
-            </>
-          ))
-        }
-      </tbody>
-		</table>
-    <div className="addIconWrapper">
-      <Fab color="inherit" size="medium" aria-label="add" href="create">
-        <AddIcon />
-      </Fab>
+        <>
+          <div className="tableBodyRow" key ={i}>
+            <div className="tableBodyRowImage"><img className="animeImage" src={child.image} /></div>
+            <div className="tableBodyRowTitle">{child.title}</div>
+            <div className="tableBodyRowGenre">{child.genre}</div>
+            <div className="tableBodyRowCategory">{child.category}</div>
+            <div className="tableBodyRowSeries">{child.series}</div>
+            <div className="tableBodyRowYear">{child.year}</div>
+            <div className="editDeleteAge">
+              <div className="editDeleteIconWrapper">
+                <Link className="editDeleteIcon" to={`update?id=${child._id}`}>
+                  <EditIcon />
+                </Link>
+                <Link className="editDeleteIcon" onClick={() => deleteAnime(child._id, child.title)}>
+                  <DeleteIcon />
+                </Link>
+              </div>
+              <div className="tableBodyRowAge">{child.age}+</div>
+            </div>
+          </div>
+          </>
+        ))
+      }
+      </div>
+      <div className="addIconWrapper">
+        <Fab color="inherit" size="medium" aria-label="add" href="create">
+          <AddIcon />
+        </Fab>
+      </div>
     </div>
-    </>
   );
 }
 
