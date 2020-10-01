@@ -11,7 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import '../../App.css';
 
-function Catalog() {
+function Anime() {
   const [isLoading, setIsLoading] = useState(true);
   const [paramOrder, setparamOrder] = useState(false);
   const [animeList, setAnimeList] = useState([]);
@@ -102,7 +102,7 @@ function Catalog() {
             <div className="tableBodyRowYear">{child.year}</div>
             <div className="editDeleteAge">
               <div className="editDeleteIconWrapper">
-                <Link className="editDeleteIcon" to={`update?id=${child._id}`}>
+                <Link className="editDeleteIcon" to={`anime/update?id=${child._id}`}>
                   <EditIcon />
                 </Link>
                 <Link className="editDeleteIcon" onClick={() => deleteAnime(child._id, child.title)}>
@@ -117,7 +117,7 @@ function Catalog() {
       }
       </div>
       <div className="addIconWrapper">
-        <Fab color="inherit" size="medium" aria-label="add" href="create">
+        <Fab color="inherit" size="medium" aria-label="add" href="anime/create">
           <AddIcon />
         </Fab>
       </div>
@@ -125,4 +125,4 @@ function Catalog() {
   );
 }
 
-export default Catalog;
+export default Anime;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Loading from '../Loading';
+import Loading from '../../Loading';
 import axios from 'axios';
-import '../../App.css';
+import '../../../App.css';
 
-function Update() {
+function UpdateAnime() {
   const urlParams = new URLSearchParams(window.location.search);
 
   const [anime, setAnime] = useState();
@@ -60,4 +60,4 @@ function Update() {
   );
 }
 
-export default Update;
+export default UpdateAnime;
