@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Input } from '@material-ui/core';
 import Loading from '../../Loading';
 import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
