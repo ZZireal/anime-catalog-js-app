@@ -31,7 +31,6 @@ function UpdateAnimeComplex() {
 
   const handleChangeMultiple = (event) => {
     const { value } = event.target;
-    console.log("Amount of selected: " + value.length);
     setSelectedData([...value]);
     updateFormData({
       ...formData,
@@ -56,23 +55,26 @@ function UpdateAnimeComplex() {
   useEffect(() => {
     loadAnimeComplex();
     loadAnimeList();
-  }, [id, loadAnimeComplex]);
+  }, [id]);
 
   const handleChange = (e) => {
     setAnimeComplex({
       ...animeComplex,
       [e.target.name]: e.target.value.trim(),
-      anime: selectedData
+      "anime": selectedData
     });
   };
   
   const handleSubmit = async (e) => {
+    e.preventDefault();
     setAnimeComplex({
-      ...animeComplex,
+      title: animeComplex.title,
       anime: selectedData
     });
-    e.preventDefault();
-    await axios.post('http://localhost:8080/anime-complex/update', animeComplex, {
+    await axios.post('http://localhost:8080/anime-complex/update', {
+      ...animeComplex,
+      anime: selectedData
+    }, {
       headers: {
         'content-type': 'application/json'
       }
@@ -116,6 +118,8 @@ function UpdateAnimeComplex() {
         <button className="createFormButton" type="button" onClick={handleSubmit}>Update</button>
       </div>
   );
+
+  return <Loading />;
 }
 
 export default UpdateAnimeComplex;

@@ -25,8 +25,6 @@ function AnimeComplex() {
     setWasDeleted(false);
   };
 
-  console.log(animeComplexList, typeof animeComplexList);
-
   useEffect(() => {
     loadAnimeList();
   }, [wasDeleted]);

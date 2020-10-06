@@ -18,7 +18,6 @@ function UpdateAnime() {
   };
 
   const handleChange = (e) => {
-    console.log(anime);
     setAnime({
       ...anime,
       [e.target.name]: e.target.value.trim(),
@@ -27,14 +26,11 @@ function UpdateAnime() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form data: ', JSON.stringify(anime));
-    console.log('Before post');
     const data = await axios.post('http://localhost:8080/anime/', anime, {
       headers: {
         'content-type': 'application/json'
       }
     });
-    console.log('Data from post:', data);
     };
 
   useEffect(() => {

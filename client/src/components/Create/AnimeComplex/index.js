@@ -34,7 +34,6 @@ function CreateAnime() {
       label: item.title
     }));
     setSelectData(someArray);
-    console.log(someArray);
     setIsLoading(false);
   };
 
